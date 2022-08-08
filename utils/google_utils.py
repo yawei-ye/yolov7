@@ -22,20 +22,20 @@ def attempt_download(file, repo='WongKinYiu/yolov7'):
 
     if not file.exists():
         try:
-            response = requests.get(f'https://api.github.com/repos/{repo}/releases/latest').json()  # github api
+            response = requests.get(f'https://api.github.com/repos/WongKinYiu/yolov7/releases/latest').json()  # github api
             assets = [x['name'] for x in response['assets']]  # release assets
             tag = response['tag_name']  # i.e. 'v1.0'
         except:  # fallback plan
             assets = ['yolov7.pt', 'yolov7-tiny.pt', 'yolov7x.pt', 'yolov7-d6.pt', 'yolov7-e6.pt', 
                       'yolov7-e6e.pt', 'yolov7-w6.pt']
-            tag = subprocess.check_output('git tag', shell=True).decode().split()[-1]
+            tag = subprocess.check_output('git submodule foreach git log -1 --tags --pretty=%D', shell=True).decode().split()[-1]
 
         name = file.name
         if name in assets:
-            msg = f'{file} missing, try downloading from https://github.com/{repo}/releases/'
+            msg = f'{file} missing, try downloading from https://github.com/WongKinYiu/yolov7/releases/'
             redundant = False  # second download option
             try:  # GitHub
-                url = f'https://github.com/{repo}/releases/download/{tag}/{name}'
+                url = f'https://github.com/WongKinYiu/yolov7/releases/download/{tag}/{name}'
                 print(f'Downloading {url} to {file}...')
                 torch.hub.download_url_to_file(url, file)
                 assert file.exists() and file.stat().st_size > 1E6  # check
