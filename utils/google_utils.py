@@ -18,8 +18,6 @@ def gsutil_getsize(url=''):
 
 def attempt_download(file, repo='WongKinYiu/yolov7'):
     # Attempt file download if does not exist
-    file = Path(str(file).strip().replace("'", '').lower())
-
     if not file.exists():
         try:
             response = requests.get(f'https://api.github.com/repos/WongKinYiu/yolov7/releases/latest').json()  # github api
@@ -30,7 +28,8 @@ def attempt_download(file, repo='WongKinYiu/yolov7'):
                       'yolov7-e6e.pt', 'yolov7-w6.pt']
             tag = subprocess.check_output('git submodule foreach git log -1 --tags --pretty=%D', shell=True).decode().split()[-1]
 
-        name = file.name
+        name = str(file.name)
+        print('name', name)
         if name in assets:
             msg = f'{file} missing, try downloading from https://github.com/WongKinYiu/yolov7/releases/'
             redundant = False  # second download option
