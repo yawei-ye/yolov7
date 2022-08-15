@@ -998,7 +998,7 @@ def letterbox(img, new_shape=(640, 640), color=(114, 114, 114), auto=True, scale
     dw, dh = new_shape[1] - new_unpad[0], new_shape[0] - new_unpad[1]  # wh padding
     
     if dw.is_cuda:
-            dw = dw.cpu().numpy()
+        dw = dw.cpu().numpy()
     if dh.is_cuda:
         dh = dh.cpu().numpy()
     if stride.is_cuda:
